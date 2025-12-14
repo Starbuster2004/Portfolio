@@ -1,0 +1,12 @@
+{
+    "name": "portfolio-root",
+    "version": "1.0.0",
+    "scripts": {
+        "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+        "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+        "start": "concurrently \"npm run start --prefix server\" \"npm run start --prefix client\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
