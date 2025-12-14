@@ -19,8 +19,8 @@ const generateToken = (id) => {
 exports.login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
-    // Check for user
-    const user = await User.findOne({ email }).select('+password');
+    // Check for user (case insensitive)
+    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
 
     if (!user) {
         throw ApiError.unauthorized('Invalid credentials');
