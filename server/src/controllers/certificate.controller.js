@@ -2,6 +2,8 @@ const Certificate = require('../models/certificate.model');
 const asyncHandler = require('../utils/asyncHandler');
 const ApiResponse = require('../utils/apiResponse');
 const { getPublicIdFromUrl, deleteFromCloudinary } = require('../middleware/upload.middleware');
+const cacheService = require('../services/cache.service');
+const { CACHE_KEYS } = require('../utils/constants');
 
 exports.getCertificates = asyncHandler(async (req, res) => {
     const certificates = await Certificate.find().sort({ createdAt: -1 });
@@ -34,6 +36,7 @@ exports.createCertificate = asyncHandler(async (req, res) => {
         pdf
     });
 
+    cacheService.invalidatePattern(CACHE_KEYS.CERTIFICATES);
     res.status(201).json(new ApiResponse(201, certificate, 'Certificate created successfully'));
 });
 
@@ -54,5 +57,6 @@ exports.deleteCertificate = asyncHandler(async (req, res) => {
 
     await Certificate.findByIdAndDelete(req.params.id);
 
+    cacheService.invalidatePattern(CACHE_KEYS.CERTIFICATES);
     res.status(200).json(new ApiResponse(200, null, 'Certificate deleted successfully'));
 });

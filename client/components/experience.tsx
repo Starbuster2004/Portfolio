@@ -1,18 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Briefcase, Calendar } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import type { Experience as ExperienceType } from "@/lib/data";
 
-interface Experience {
-    _id: string;
-    company: string;
-    role: string;
-    period: string;
-    description: string;
-    tags: string[];
-    order: number;
+interface ExperienceProps {
+    experiences: ExperienceType[];
 }
 
 // Color palette for experiences (cycles through)
@@ -23,89 +17,28 @@ const colorPalette = [
     { gradient: "from-[#A5B4FC] to-[#818CF8]", dotColor: "#A5B4FC" },
 ];
 
-export function Experience() {
-    const [experiences, setExperiences] = useState<Experience[]>([]);
-    const [loading, setLoading] = useState(true);
+// Fallback experiences used when no data is provided
+const fallbackExperiences: ExperienceType[] = [
+    {
+        _id: "1",
+        company: "Your Company",
+        role: "Your Role",
+        period: "2023 - Present",
+        description: "Add your experience from the admin panel.",
+        tags: ["Add", "Your", "Skills"],
+        order: 0,
+    },
+];
 
-    useEffect(() => {
-        const fetchExperiences = async () => {
-            try {
-                // Use Next.js proxy - hides backend URL from browser
-                const res = await fetch("/api/experiences");
-                const data = await res.json();
-                if (data.data && data.data.length > 0) {
-                    setExperiences(data.data);
-                } else {
-                    // Fallback to default data if API is empty
-                    setExperiences([
-                        {
-                            _id: "1",
-                            company: "Innovate AI Labs",
-                            role: "Senior AI Engineer",
-                            period: "2023 - Present",
-                            description: "Leading the development of Generative AI agents and LLM-based applications. Architecting scalable RAG pipelines and deploying models to production using Docker and Kubernetes.",
-                            tags: ["LLMs", "Python", "PyTorch", "FastAPI"],
-                            order: 0,
-                        },
-                        {
-                            _id: "2",
-                            company: "DataWorks Solutions",
-                            role: "Data Scientist",
-                            period: "2021 - 2023",
-                            description: "Developed predictive models for customer churn and demand forecasting. Optimized machine learning workflows and reduced inference latency by 40%.",
-                            tags: ["Scikit-learn", "TensorFlow", "SQL", "AWS"],
-                            order: 1,
-                        },
-                        {
-                            _id: "3",
-                            company: "TechStar Intern",
-                            role: "Machine Learning Intern",
-                            period: "2020 - 2021",
-                            description: "Assisted in building computer vision models for automated quality control involved in data preprocessing, annotation, and model training.",
-                            tags: ["OpenCV", "Keras", "Python"],
-                            order: 2,
-                        },
-                    ]);
-                }
-            } catch (error) {
-                console.error("Failed to fetch experiences:", error);
-                // Use fallback data on error
-                setExperiences([
-                    {
-                        _id: "1",
-                        company: "Your Company",
-                        role: "Your Role",
-                        period: "2023 - Present",
-                        description: "Add your experience from the admin panel.",
-                        tags: ["Add", "Your", "Skills"],
-                        order: 0,
-                    },
-                ]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchExperiences();
-    }, []);
-
-    if (loading) {
-        return (
-            <section id="experience" className="py-32 px-4 bg-white dark:bg-black">
-                <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-20">
-                        <div className="h-8 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-full mx-auto mb-6 animate-pulse" />
-                        <div className="h-12 w-96 bg-zinc-200 dark:bg-zinc-800 rounded-lg mx-auto animate-pulse" />
-                    </div>
-                    <div className="space-y-8">
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="h-48 bg-zinc-100 dark:bg-zinc-900 rounded-2xl animate-pulse" />
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-    }
+/**
+ * Experience Section Component
+ * 
+ * This component receives experiences as props from the parent server component.
+ * No client-side fetching - data is pre-rendered at build time via ISR.
+ */
+export function Experience({ experiences }: ExperienceProps) {
+    // Use provided experiences or fallback
+    const displayExperiences = experiences.length > 0 ? experiences : fallbackExperiences;
 
     return (
         <section id="experience" className="py-32 px-4 bg-white dark:bg-black relative overflow-hidden">
@@ -140,7 +73,7 @@ export function Experience() {
                     {/* Vertical timeline line */}
                     <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#818CF8] via-[#6366F1] to-[#4F46E5] md:-translate-x-px" />
 
-                    {experiences.map((exp, index) => {
+                    {displayExperiences.map((exp, index) => {
                         const colors = colorPalette[index % colorPalette.length];
 
                         return (

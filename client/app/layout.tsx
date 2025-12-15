@@ -4,7 +4,6 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "sonner"
-import { ProjectProvider } from "@/context/project-context"
 import { ErrorBoundary } from "@/components/error-boundary"
 
 import { Inter as V0_Font_Inter, Geist_Mono as V0_Font_Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
@@ -49,6 +48,12 @@ export const metadata: Metadata = {
   },
 }
 
+/**
+ * Root Layout
+ * 
+ * Note: ProjectProvider has been removed as all data is now fetched
+ * at build time via ISR in individual page components.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -58,13 +63,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${_inter.variable} ${_geistMono.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <ProjectProvider>
-            <ErrorBoundary>
-              {children}
-            </ErrorBoundary>
-            <Analytics />
-            <Toaster />
-          </ProjectProvider>
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+          <Analytics />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

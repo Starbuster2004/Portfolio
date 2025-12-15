@@ -10,12 +10,14 @@ const {
     reorderExperiences,
 } = require('../controllers/experience.controller');
 const { protect, authorizeRoles } = require('../middleware/authMiddleware');
+const { cacheMiddleware } = require('../middleware/cache.middleware');
+const { CACHE_TTL } = require('../utils/constants');
 
-// Public routes
-router.get('/', getExperiences);
-router.get('/:id', getExperience);
+// Public routes (with caching)
+router.get('/', cacheMiddleware(CACHE_TTL.SHORT), getExperiences);
+router.get('/:id', cacheMiddleware(CACHE_TTL.SHORT), getExperience);
 
-// Admin routes
+// Admin routes (no caching)
 router.get('/admin/all', protect, authorizeRoles('admin'), getExperiencesAdmin);
 router.post('/', protect, authorizeRoles('admin'), createExperience);
 router.put('/reorder', protect, authorizeRoles('admin'), reorderExperiences);
@@ -23,3 +25,4 @@ router.put('/:id', protect, authorizeRoles('admin'), updateExperience);
 router.delete('/:id', protect, authorizeRoles('admin'), deleteExperience);
 
 module.exports = router;
+

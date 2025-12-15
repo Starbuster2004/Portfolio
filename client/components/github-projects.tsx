@@ -1,45 +1,21 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Star, GitFork, ArrowUpRight, ExternalLink } from "lucide-react"
-import { useState, useEffect } from "react"
+import { Github } from "lucide-react"
 import { ProjectBentoGrid, BentoItem } from "@/components/ui/project-bento-grid"
+import type { Project } from "@/lib/data"
 
-interface Project {
-  _id: string
-  title: string
-  description: string
-  technologies: string[]
-  link?: string
-  githubUrl?: string
-  category: "project" | "internship" | "job"
-  featured: boolean
-  image?: string
+interface GithubProjectsProps {
+  projects: Project[];
 }
 
-export function GithubProjects() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchProjects()
-  }, [])
-
-  const fetchProjects = async () => {
-    try {
-      // Use Next.js proxy - hides backend URL from browser
-      const res = await fetch("/api/projects")
-      const data = await res.json()
-      if (data.data) {
-        setProjects(data.data)
-      }
-    } catch {
-      // Silently fail - component handles empty state
-    } finally {
-      setLoading(false)
-    }
-  }
-
+/**
+ * Github Projects Section Component
+ * 
+ * This component receives projects as props from the parent server component.
+ * No client-side fetching - data is pre-rendered at build time via ISR.
+ */
+export function GithubProjects({ projects }: GithubProjectsProps) {
   const bentoItems: BentoItem[] = projects.map((project, i) => ({
     title: project.title,
     description: project.description,
@@ -74,11 +50,9 @@ export function GithubProjects() {
           <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white">Projects & Open Source</h2>
         </motion.div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-[300px] rounded-xl bg-zinc-100 dark:bg-zinc-900 animate-pulse" />
-            ))}
+        {projects.length === 0 ? (
+          <div className="text-center py-16 text-zinc-500 dark:text-zinc-400">
+            <p className="text-lg">No projects yet. Add some from the admin panel!</p>
           </div>
         ) : (
           <ProjectBentoGrid items={bentoItems} />

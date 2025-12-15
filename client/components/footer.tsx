@@ -1,22 +1,26 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import { motion, useMotionValue, useSpring } from "framer-motion"
-import { Github, Linkedin, Mail, Twitter, MapPin, ArrowRight, Globe } from "lucide-react"
+import { Github, Linkedin, Mail, Twitter, MapPin, ArrowRight } from "lucide-react"
 import { ContactModal } from "@/components/contact-modal"
+import type { HeroData } from "@/lib/data"
 
-interface SocialLinks {
-  github: string
-  linkedin: string
-  twitter: string
-  website: string
+interface FooterProps {
+  footerData: HeroData | null;
 }
 
-interface FooterData {
-  email: string
-  socialLinks: SocialLinks
-  footerText: string
-}
+// Default values used when no data is provided
+const defaultFooterData = {
+  email: "govindraj@example.com",
+  socialLinks: {
+    github: "https://github.com",
+    linkedin: "https://linkedin.com",
+    twitter: "https://twitter.com",
+    website: "",
+  },
+  footerText: "",
+};
 
 // Magnetic social icon component
 function MagneticSocialIcon({
@@ -101,46 +105,24 @@ function MagneticSocialIcon({
   )
 }
 
-export function Footer() {
+/**
+ * Footer Section Component
+ * 
+ * This component receives footer data as props from the parent server component.
+ * No client-side fetching - data is pre-rendered at build time via ISR.
+ */
+export function Footer({ footerData }: FooterProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [buttonHovered, setButtonHovered] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [footerData, setFooterData] = useState<FooterData>({
-    email: "govindraj@example.com",
-    socialLinks: {
-      github: "https://github.com",
-      linkedin: "https://linkedin.com",
-      twitter: "https://twitter.com",
-      website: "",
-    },
-    footerText: "",
-  })
 
-  useEffect(() => {
-    const fetchFooterData = async () => {
-      try {
-        // Use Next.js proxy - hides backend URL from browser
-        const res = await fetch("/api/hero")
-        const data = await res.json()
-        if (data.data) {
-          setFooterData({
-            email: data.data.email || "govindraj@example.com",
-            socialLinks: data.data.socialLinks || {
-              github: "https://github.com",
-              linkedin: "https://linkedin.com",
-              twitter: "https://twitter.com",
-              website: "",
-            },
-            footerText: data.data.footerText || "",
-          })
-        }
-      } catch {
-        // Silently fail - component shows default data
-      }
-    }
-    fetchFooterData()
-  }, [])
+  // Use provided data or fall back to defaults
+  const data = {
+    email: footerData?.email || defaultFooterData.email,
+    socialLinks: footerData?.socialLinks || defaultFooterData.socialLinks,
+    footerText: footerData?.footerText || defaultFooterData.footerText,
+  };
 
   const handleButtonMouseMove = (e: React.MouseEvent) => {
     if (!buttonRef.current) return
@@ -174,7 +156,7 @@ export function Footer() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
             >
-              // Let&apos;s Connect
+                            // Let&apos;s Connect
             </motion.span>
 
             <h2 className="text-5xl md:text-7xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">
@@ -246,13 +228,13 @@ export function Footer() {
 
             <div className="flex flex-col gap-4">
               <a
-                href={`mailto:${footerData.email}`}
+                href={`mailto:${data.email}`}
                 className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-300 hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors group"
               >
                 <div className="p-3 rounded-full bg-zinc-200 dark:bg-zinc-800 group-hover:bg-[#6366F1]/20 transition-colors">
                   <Mail className="w-5 h-5" />
                 </div>
-                <span className="font-medium">{footerData.email}</span>
+                <span className="font-medium">{data.email}</span>
               </a>
               <div className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-300">
                 <div className="p-3 rounded-full bg-zinc-200 dark:bg-zinc-800">
@@ -275,25 +257,25 @@ export function Footer() {
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <MagneticSocialIcon
-                href={footerData.socialLinks.github}
+                href={data.socialLinks.github || ""}
                 icon={Github}
                 label="GitHub"
                 color="#6366F1"
               />
               <MagneticSocialIcon
-                href={footerData.socialLinks.linkedin}
+                href={data.socialLinks.linkedin || ""}
                 icon={Linkedin}
                 label="LinkedIn"
                 color="#0A66C2"
               />
               <MagneticSocialIcon
-                href={footerData.socialLinks.twitter}
+                href={data.socialLinks.twitter || ""}
                 icon={Twitter}
                 label="Twitter"
                 color="#1DA1F2"
               />
               <MagneticSocialIcon
-                href={`mailto:${footerData.email}`}
+                href={`mailto:${data.email}`}
                 icon={Mail}
                 label="Email"
                 color="#6366F1"

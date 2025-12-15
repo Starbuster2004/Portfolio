@@ -1,20 +1,72 @@
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 import { Navbar } from "@/components/navbar"
 import { ShaderAnimation } from "@/components/shader-hero"
 import { About } from "@/components/about"
-import { BentoGrid } from "@/components/bento-grid"
-import { Experience } from "@/components/experience"
-import { GithubProjects } from "@/components/github-projects"
-import { BlogsPapers } from "@/components/blogs-papers"
-import { Certificates } from "@/components/certificates"
-import { Footer } from "@/components/footer"
 import { CursorEffect } from "@/components/cursor-effect"
 import { ScrollProgress } from "@/components/ui/scroll-progress"
-
 import { ThemeToggle } from "@/components/theme-toggle"
 import { FloatingDock } from "@/components/ui/floating-dock"
 import { Home as HomeIcon, User, Briefcase, Zap, GitFork, Award, BookOpen, Mail } from "lucide-react"
+import { getAllPortfolioData } from "@/lib/data"
 
-export default function Home() {
+// Lazy load below-fold components for faster initial load
+const BentoGrid = dynamic(() => import("@/components/bento-grid").then(mod => ({ default: mod.BentoGrid })), {
+  loading: () => <SectionSkeleton />,
+  ssr: true
+})
+
+const Experience = dynamic(() => import("@/components/experience").then(mod => ({ default: mod.Experience })), {
+  loading: () => <SectionSkeleton />,
+  ssr: true
+})
+
+const GithubProjects = dynamic(() => import("@/components/github-projects").then(mod => ({ default: mod.GithubProjects })), {
+  loading: () => <SectionSkeleton />,
+  ssr: true
+})
+
+const BlogsPapers = dynamic(() => import("@/components/blogs-papers").then(mod => ({ default: mod.BlogsPapers })), {
+  loading: () => <SectionSkeleton />,
+  ssr: true
+})
+
+const Certificates = dynamic(() => import("@/components/certificates").then(mod => ({ default: mod.Certificates })), {
+  loading: () => <SectionSkeleton />,
+  ssr: true
+})
+
+const Footer = dynamic(() => import("@/components/footer").then(mod => ({ default: mod.Footer })), {
+  loading: () => <SectionSkeleton />,
+  ssr: true
+})
+
+// Skeleton component for loading states
+function SectionSkeleton() {
+  return (
+    <div className="min-h-[50vh] flex items-center justify-center">
+      <div className="animate-pulse flex flex-col items-center gap-4">
+        <div className="h-8 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
+        <div className="h-4 w-64 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+        <div className="grid grid-cols-2 gap-4 mt-8">
+          <div className="h-32 w-40 bg-zinc-200 dark:bg-zinc-800 rounded-xl"></div>
+          <div className="h-32 w-40 bg-zinc-200 dark:bg-zinc-800 rounded-xl"></div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Homepage - Server Component with ISR
+ * 
+ * All portfolio data is fetched at build time and revalidated hourly.
+ * This ensures instant page loads without any backend dependency at runtime.
+ */
+export default async function Home() {
+  // Fetch all data at build time (ISR enabled - revalidates hourly)
+  const { heroData, experiences, projects, blogs, certificates } = await getAllPortfolioData();
+
   const navItems = [
     { title: "Home", icon: <HomeIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />, href: "#hero" },
     { title: "About", icon: <User className="h-full w-full text-neutral-500 dark:text-neutral-300" />, href: "#about" },
@@ -34,38 +86,51 @@ export default function Home() {
         <ThemeToggle />
       </div>
 
-      {/* Seamless sections with no gaps */}
+      {/* Critical above-fold content - loaded immediately */}
       <section id="hero">
         <ShaderAnimation />
       </section>
 
       <section id="about">
-        <About />
+        <About data={heroData} />
       </section>
 
-      <section id="experience">
-        <Experience />
-      </section>
+      {/* Below-fold content - lazy loaded with pre-fetched data */}
+      <Suspense fallback={<SectionSkeleton />}>
+        <section id="experience">
+          <Experience experiences={experiences} />
+        </section>
+      </Suspense>
 
-      <section id="skills">
-        <BentoGrid />
-      </section>
+      <Suspense fallback={<SectionSkeleton />}>
+        <section id="skills">
+          <BentoGrid />
+        </section>
+      </Suspense>
 
-      <section id="projects">
-        <GithubProjects />
-      </section>
+      <Suspense fallback={<SectionSkeleton />}>
+        <section id="projects">
+          <GithubProjects projects={projects} />
+        </section>
+      </Suspense>
 
-      <section id="blogs">
-        <BlogsPapers />
-      </section>
+      <Suspense fallback={<SectionSkeleton />}>
+        <section id="blogs">
+          <BlogsPapers blogs={blogs} />
+        </section>
+      </Suspense>
 
-      <section id="certificates">
-        <Certificates />
-      </section>
+      <Suspense fallback={<SectionSkeleton />}>
+        <section id="certificates">
+          <Certificates certificates={certificates} />
+        </section>
+      </Suspense>
 
-      <section id="contact">
-        <Footer />
-      </section>
+      <Suspense fallback={<SectionSkeleton />}>
+        <section id="contact">
+          <Footer footerData={heroData} />
+        </section>
+      </Suspense>
 
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
         <FloatingDock items={navItems} />

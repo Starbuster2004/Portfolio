@@ -23,6 +23,7 @@ const heroRouter = require('./router/heroRouter');
 const leetCodeRouter = require('./router/leetcode.route');
 const certificateRouter = require('./router/certificateRouter');
 const experienceRouter = require('./router/experienceRouter');
+const adminRouter = require('./router/adminRouter');
 
 const app = express();
 
@@ -85,6 +86,7 @@ app.use('/api/hero', heroRouter);
 app.use('/api/leetcode', leetCodeRouter);
 app.use('/api/certificates', certificateRouter);
 app.use('/api/experiences', experienceRouter);
+app.use('/api/admin', adminRouter);
 
 // Error Handling
 app.use(notFoundHandler);

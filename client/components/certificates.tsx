@@ -1,84 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Award } from "lucide-react"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
+import type { Certificate } from "@/lib/data"
 
-interface Certificate {
-    _id: string
-    title: string
-    serialId: string
-    image: string
+interface CertificatesProps {
+    certificates: Certificate[];
 }
 
-// Fallback certificates if API returns empty
-const fallbackCertificates: Certificate[] = [
-    {
-        _id: "1",
-        title: "Oracle Certified AI Foundation Associate",
-        serialId: "OCI-AI-2024",
-        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop",
-    },
-    {
-        _id: "2",
-        title: "Microsoft Azure AI Fundamentals",
-        serialId: "AZ-900-AI",
-        image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
-    },
-    {
-        _id: "3",
-        title: "AWS Certified Machine Learning",
-        serialId: "AWS-ML-2024",
-        image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&h=400&fit=crop",
-    },
-]
-
-export function Certificates() {
-    const [certificates, setCertificates] = useState<Certificate[]>([])
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const fetchCertificates = async () => {
-            try {
-                // Use Next.js proxy - hides backend URL from browser
-                const res = await fetch("/api/certificates")
-                const data = await res.json()
-                if (data.data && data.data.length > 0) {
-                    setCertificates(data.data)
-                } else {
-                    // Use fallback data if API returns empty
-                    setCertificates(fallbackCertificates)
-                }
-            } catch (error) {
-                console.error("Failed to fetch certificates", error)
-                // Use fallback data on error
-                setCertificates(fallbackCertificates)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchCertificates()
-    }, [])
-
-    if (loading) {
-        return (
-            <section className="py-32 px-4 bg-zinc-50 dark:bg-black transition-colors duration-700">
-                <div className="max-w-6xl mx-auto">
-                    <div className="mb-16 flex flex-col gap-4">
-                        <div className="w-32 h-8 rounded-full bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
-                        <div className="w-64 h-12 rounded-lg bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[...Array(3)].map((_, i) => (
-                            <div key={i} className="h-64 rounded-2xl bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
-                        ))}
-                    </div>
-                </div>
-            </section>
-        )
-    }
+/**
+ * Certificates Section Component
+ * 
+ * This component receives certificates as props from the parent server component.
+ * No client-side fetching - data is pre-rendered at build time via ISR.
+ */
+export function Certificates({ certificates }: CertificatesProps) {
+    // Certificates are pre-fetched - fallback handled in lib/data.ts
 
     return (
         <section className="py-32 px-4 bg-zinc-50 dark:bg-black transition-colors duration-700">

@@ -2,6 +2,8 @@ const Experience = require('../models/Experience');
 const asyncHandler = require('../utils/asyncHandler');
 const ApiError = require('../utils/apiError');
 const ApiResponse = require('../utils/apiResponse');
+const cacheService = require('../services/cache.service');
+const { CACHE_KEYS } = require('../utils/constants');
 
 /**
  * @desc    Get all experiences
@@ -58,6 +60,7 @@ exports.createExperience = asyncHandler(async (req, res) => {
         isActive: isActive !== undefined ? isActive : true,
     });
 
+    cacheService.invalidatePattern(CACHE_KEYS.EXPERIENCES);
     res.status(201).json(ApiResponse.created(experience));
 });
 
@@ -83,6 +86,7 @@ exports.updateExperience = asyncHandler(async (req, res) => {
     if (isActive !== undefined) experience.isActive = isActive;
 
     await experience.save();
+    cacheService.invalidatePattern(CACHE_KEYS.EXPERIENCES);
     res.json(ApiResponse.ok(experience, 'Experience updated successfully'));
 });
 
@@ -98,6 +102,7 @@ exports.deleteExperience = asyncHandler(async (req, res) => {
     }
 
     await Experience.findByIdAndDelete(req.params.id);
+    cacheService.invalidatePattern(CACHE_KEYS.EXPERIENCES);
     res.json(ApiResponse.ok(null, 'Experience deleted successfully'));
 });
 
@@ -119,5 +124,6 @@ exports.reorderExperiences = asyncHandler(async (req, res) => {
     );
 
     await Promise.all(updates);
+    cacheService.invalidatePattern(CACHE_KEYS.EXPERIENCES);
     res.json(ApiResponse.ok(null, 'Experiences reordered successfully'));
 });

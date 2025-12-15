@@ -1,68 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, BookOpen, FileText } from "lucide-react";
-import Link from "next/link";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import type { Blog } from "@/lib/data";
 
-interface Blog {
-    _id: string;
-    title: string;
-    summary: string;
-    image?: string;
-    date: string;
-    tags: string[];
-    slug?: string;
+interface BlogsPapersProps {
+    blogs: Blog[];
 }
 
-export function BlogsPapers() {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                // Use Next.js proxy - hides backend URL from browser
-                const res = await fetch("/api/blogs");
-                const response = await res.json();
-                if (response.success && response.data) {
-                    setBlogs(response.data);
-                }
-            } catch {
-                // Silently fail - component handles empty state
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchBlogs();
-    }, []);
-
-    // Placeholder data if no blogs exist yet (to show the UI/Section)
-    const displayBlogs = blogs.length > 0 ? blogs : [
-        {
-            _id: "1",
-            title: "Optimizing Transformer Inference",
-            summary: "A deep dive into KV-cache optimization and quantization techniques for serving LLMs at scale.",
-            date: "2024-03-15",
-            tags: ["Paper", "LLM", "Systems"],
-            slug: "optimizing-transformer-inference"
-        },
-        {
-            _id: "2",
-            title: "The Future of Agentic AI",
-            summary: "Exploring how autonomous agents will reshape software engineering workflows.",
-            date: "2024-02-10",
-            tags: ["Article", "Agents", "Future"],
-            slug: "future-of-agentic-ai"
-        }
-    ];
-
-    if (!loading && blogs.length === 0) {
-        // Optional: render nothing if no real blogs? 
-        // For now, I'll render the section with placeholders so the user sees it.
-    }
+/**
+ * Blogs & Papers Section Component
+ * 
+ * This component receives blogs as props from the parent server component.
+ * No client-side fetching - data is pre-rendered at build time via ISR.
+ */
+export function BlogsPapers({ blogs }: BlogsPapersProps) {
+    // Use provided blogs (fallback data is handled in lib/data.ts)
+    const displayBlogs = blogs;
 
     return (
         <section id="blogs" className="py-32 px-4 bg-white dark:bg-black border-t border-zinc-200 dark:border-zinc-800">
@@ -116,7 +71,7 @@ export function BlogsPapers() {
                                         </div>
                                     )}
                                     <div className="text-sm text-zinc-500 font-mono">
-                                        {new Date(item.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+                                        {new Date(item.date || item.createdAt || Date.now()).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
                                     </div>
                                 </div>
 
@@ -124,7 +79,7 @@ export function BlogsPapers() {
                                     {item.title}
                                 </h3>
                                 <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
-                                    {item.summary}
+                                    {item.summary || item.content?.substring(0, 150) + '...'}
                                 </p>
                             </div>
 

@@ -14,20 +14,23 @@ const HTTP_STATUS = {
 };
 
 const CACHE_TTL = {
-    SHORT: 60,
-    MEDIUM: 300,
-    LONG: 600,
-    HOUR: 3600,
-    DAY: 86400,
+    SHORT: 30,      // 30 seconds for dynamic content
+    MEDIUM: 120,    // 2 minutes
+    LONG: 300,      // 5 minutes
+    HOUR: 600,      // 10 minutes (reduced from 1 hour)
+    DAY: 3600,      // 1 hour (reduced from 1 day)
 };
 
+// Cache keys must match URL patterns for invalidation to work
 const CACHE_KEYS = {
-    PROJECTS: 'projects',
-    BLOGS: 'blogs',
-    SKILLS: 'skills',
-    CERTIFICATES: 'certificates',
-    HERO: 'hero',
-    LEETCODE: 'leetcode',
+    PROJECTS: '/api/projects',
+    BLOGS: '/api/blogs',
+    SKILLS: '/api/skills',
+    CERTIFICATES: '/api/certificates',
+    HERO: '/api/hero',
+    EXPERIENCES: '/api/experiences',
+    LEETCODE: '/api/leetcode',
+    ALL: '/api/',  // Matches all API routes
 };
 
 const RATE_LIMITS = {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { FolderKanban, FileText, MessageSquare, Brain } from "lucide-react"
+import { FolderKanban, FileText, MessageSquare, Brain, RefreshCw, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
 interface Stats {
@@ -84,11 +84,51 @@ export default function AdminDashboard() {
         },
     ]
 
+    const flushCache = async () => {
+        try {
+            const token = localStorage.getItem("admin_token")
+            const res = await fetch("/api/admin/cache/flush", {
+                method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
+            })
+            if (res.ok) {
+                toast.success("Cache cleared! Refresh your site to see updates.")
+            } else {
+                toast.error("Failed to clear cache")
+            }
+        } catch (error) {
+            toast.error("Failed to clear cache")
+        }
+    }
+
+    const refreshStats = () => {
+        setLoading(true)
+        window.location.reload()
+    }
+
     return (
         <div className="space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">Dashboard Overview</h1>
-                <p className="text-zinc-500 dark:text-zinc-400">Welcome back, Admin.</p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">Dashboard Overview</h1>
+                    <p className="text-zinc-500 dark:text-zinc-400">Welcome back, Admin.</p>
+                </div>
+                <div className="flex gap-2">
+                    <button
+                        onClick={refreshStats}
+                        className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg transition-colors"
+                    >
+                        <RefreshCw className="w-4 h-4" />
+                        Refresh
+                    </button>
+                    <button
+                        onClick={flushCache}
+                        className="flex items-center gap-2 px-4 py-2 bg-red-500/10 text-red-600 hover:bg-red-500/20 rounded-lg transition-colors"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                        Clear Cache
+                    </button>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
