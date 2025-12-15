@@ -9,6 +9,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const router = useRouter()
     const pathname = usePathname()
     const [loading, setLoading] = useState(true)
+    const [authenticated, setAuthenticated] = useState(false)
 
     useEffect(() => {
         // Skip auth check for login page
@@ -17,12 +18,43 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return
         }
 
-        const token = localStorage.getItem("admin_token")
-        if (!token) {
-            router.push("/admin/login")
-        } else {
-            setLoading(false)
+        const validateToken = async () => {
+            const token = localStorage.getItem("admin_token")
+
+            if (!token) {
+                router.push("/admin/login")
+                return
+            }
+
+            try {
+                // Validate token by making a test request to a protected endpoint
+                const res = await fetch("/api/auth/me", {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+
+                if (!res.ok) {
+                    // Token is invalid or expired - clear it and redirect
+                    console.log("Token invalid, clearing and redirecting to login")
+                    localStorage.removeItem("admin_token")
+                    localStorage.removeItem("admin_user")
+                    router.push("/admin/login")
+                    return
+                }
+
+                setAuthenticated(true)
+            } catch (error) {
+                console.error("Auth validation error:", error)
+                // On network error, still allow if token exists (offline support)
+                // But clear potentially stale token
+                localStorage.removeItem("admin_token")
+                localStorage.removeItem("admin_user")
+                router.push("/admin/login")
+            } finally {
+                setLoading(false)
+            }
         }
+
+        validateToken()
     }, [pathname, router])
 
     if (loading) {
@@ -35,6 +67,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     if (pathname === "/admin/login") {
         return <>{children}</>
+    }
+
+    if (!authenticated) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black">
+                <Loader2 className="w-8 h-8 animate-spin text-zinc-500" />
+            </div>
+        )
     }
 
     return (
