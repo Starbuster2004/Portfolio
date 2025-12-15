@@ -1,117 +1,279 @@
+<div align="center">
+
 # 🚀 Portfolio V3
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black) ![React](https://img.shields.io/badge/React-18-blue) ![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC) ![Node.js](https://img.shields.io/badge/Node.js-18-green) ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248)
+### A blazing-fast, visually stunning portfolio with ISR-powered static architecture
 
-A high-performance, visually stunning portfolio website featuring enterprise-grade security, a custom CMS (Admin Panel), and cutting-edge UI animations. Built with a decoupled **Next.js** frontend and **Express** backend.
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)](https://typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://mongodb.com/)
 
-## ✨ Key Features
+<br />
+
+**[🌐 Live Demo](https://your-portfolio.vercel.app)** · **[📖 Documentation](#-getting-started)** · **[🐛 Report Bug](https://github.com/Starbuster2004/Portfolio/issues)**
+
+</div>
+
+---
+
+## ⚡ Performance First
+
+<table>
+<tr>
+<td width="50%">
+
+### 🏎️ Static-First Architecture
+
+Built with **Incremental Static Regeneration (ISR)**, the site loads **instantly** from Vercel's CDN. Backend cold starts? They don't affect your visitors.
+
+| Metric | Value |
+|--------|-------|
+| First Contentful Paint | < 1s |
+| Time to Interactive | < 2s |
+| Runtime API Calls | **0** |
+
+</td>
+<td width="50%">
+
+### 🔄 How It Works
+
+```
+┌─────────────┐      ┌─────────────┐
+│  Build Time │ ───▶ │  Static HTML │
+│  (Vercel)   │      │  (CDN Edge)  │
+└─────────────┘      └─────────────┘
+       │                    │
+       ▼                    ▼
+  Fetch from API      Instant Load!
+  (once per hour)     (for all users)
+```
+
+</td>
+</tr>
+</table>
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="33%" valign="top">
 
 ### 🎨 Creative UI/UX
-- **Smooth Animations**: Framer Motion integration for buttery smooth page transitions and scroll effects.
-- **Micro-interactions**: Magnetic buttons, cursor effects, and glowing cards.
-- **Responsive Design**: Mobile-first architecture using Tailwind CSS.
-- **Dark Mode**: Fully supported system-aware dark/light themes.
+- **WebGL Shaders** - Stunning hero animations
+- **Framer Motion** - Buttery smooth transitions
+- **Magnetic Buttons** - Interactive micro-effects
+- **Custom Cursor** - Unique browsing experience
+- **Dark/Light Mode** - System-aware theming
 
-### 🛡️ Enterprise-Grade Security
-- **Invisible Backend**: API calls are proxied through Next.js Rewrites (`/api/...`), completely hiding the backend URL from `Inspect Element`.
-- **Attack Protection**: Secured against XSS, NoSQL Injection, and HTTP Parameter Pollution.
-- **Strict Validation**: All data is validated using **Zod** schemas on both client and server.
-- **Rate Limiting**: Intelligent limiting to prevent abuse.
+</td>
+<td width="33%" valign="top">
 
-### ⚡ Performance
-- **Zero CLS**: Optimized font loading and layout stability.
-- **Production Optimized**: Source maps disabled, headers secured, and assets compressed.
-- **Dynamic Content**: Full Admin Panel to manage Projects, Blogs, Certificates, and Experience without touching code.
+### 🛡️ Enterprise Security
+- **Hidden Backend** - API proxied via Next.js
+- **XSS Protected** - Sanitized inputs
+- **Rate Limited** - Abuse prevention
+- **Zod Validation** - Type-safe schemas
+- **Helmet Headers** - Security-first
+
+</td>
+<td width="33%" valign="top">
+
+### 📊 Admin Dashboard
+- **Projects** - CRUD with image uploads
+- **Blogs** - Rich content management
+- **Certificates** - Showcase credentials
+- **Experience** - Timeline management
+- **Messages** - Contact form inbox
+
+</td>
+</tr>
+</table>
 
 ---
 
 ## 🛠️ Tech Stack
 
-**Frontend**
-- **Framework**: Next.js 14 (App Router)
-- **Styling**: Tailwind CSS + Shadcn UI
-- **Animations**: Framer Motion
-- **State/Fetching**: React Hooks + Custom API wrapper
-
-**Backend**
-- **Runtime**: Node.js + Express
-- **Database**: MongoDB (Mongoose)
-- **Security**: Helmet, Zod, Rate-Limiter, Mongo-Sanitize
-- **Storage**: Cloudinary (for images/resumes)
+<table>
+<tr>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=nextjs" width="48" height="48" alt="Next.js" />
+<br>Next.js 15
+</td>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=react" width="48" height="48" alt="React" />
+<br>React 18
+</td>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=ts" width="48" height="48" alt="TypeScript" />
+<br>TypeScript
+</td>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=tailwind" width="48" height="48" alt="Tailwind" />
+<br>Tailwind
+</td>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=nodejs" width="48" height="48" alt="Node.js" />
+<br>Node.js
+</td>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=express" width="48" height="48" alt="Express" />
+<br>Express
+</td>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=mongodb" width="48" height="48" alt="MongoDB" />
+<br>MongoDB
+</td>
+<td align="center" width="96">
+<img src="https://skillicons.dev/icons?i=vercel" width="48" height="48" alt="Vercel" />
+<br>Vercel
+</td>
+</tr>
+</table>
 
 ---
 
-## ⚡ Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
-- MongoDB connection string
-- Cloudinary credentials
 
-### 1. Installation
+- Node.js 18+
+- MongoDB Atlas account
+- Cloudinary account (for media)
+
+### Installation
 
 ```bash
 # Clone the repository
 git clone https://github.com/Starbuster2004/Portfolio.git
+cd Portfolio
 
-# Install Frontend dependencies
-cd client
-npm install
-
-# Install Backend dependencies
-cd ../server
-npm install
+# Install all dependencies
+npm install          # Root package.json
+cd client && npm install
+cd ../server && npm install
 ```
 
-### 2. Environment Variables
+### Environment Setup
 
-Create `.env` in `server/` and `.env.local` in `client/` based on `.env.example`.
+<details>
+<summary><b>📁 Client Environment</b> (<code>client/.env.local</code>)</summary>
 
-**Client (`client/.env.local`)**
 ```env
+# Server-side only (for ISR data fetching)
 API_URL=http://localhost:5000
-```
-*(Note: faster local dev use http://localhost:5000, production uses real URL)*
 
-**Server (`server/.env`)**
+# Optional: On-demand revalidation
+REVALIDATE_SECRET=your-super-secret-key
+```
+
+</details>
+
+<details>
+<summary><b>📁 Server Environment</b> (<code>server/.env</code>)</summary>
+
 ```env
 PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
 NODE_ENV=development
+
+# Database
+MONGODB_URI=mongodb+srv://...
+
+# Authentication
+JWT_SECRET=your-jwt-secret
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your-cloud
+CLOUDINARY_API_KEY=your-key
+CLOUDINARY_API_SECRET=your-secret
 ```
 
-### 3. Running Locally
+</details>
 
-**Start Backend**
+### Run Locally
+
 ```bash
+# Terminal 1 - Start Backend
 cd server
 npm run dev
-# Running on http://localhost:5000
-```
+# → http://localhost:5000
 
-**Start Frontend**
-```bash
+# Terminal 2 - Start Frontend  
 cd client
 npm run dev
-# Running on http://localhost:3000
+# → http://localhost:3000
 ```
 
-Visit `http://localhost:3000`. The frontend will proxy requests to the backend automatically.
+---
+
+## 🌐 Deployment
+
+### Frontend (Vercel)
+
+1. Import `client` folder to Vercel
+2. Set environment variables:
+   ```
+   API_URL = https://your-backend.onrender.com
+   REVALIDATE_SECRET = <your-secret>
+   ```
+3. Deploy! 🚀
+
+### Backend (Render)
+
+1. Create new Web Service from `server` folder
+2. Set all backend environment variables
+3. Deploy! 🚀
+
+### On-Demand Revalidation
+
+After updating content in admin, trigger instant cache refresh:
+
+```bash
+curl -X POST https://your-site.vercel.app/api/revalidate \
+  -H "x-revalidate-secret: YOUR_SECRET"
+```
 
 ---
 
-## 🚀 Deployment
+## 📁 Project Structure
 
-- **Frontend**: Deploy `client` folder to **Vercel**. Set `API_URL` environment variable to your backend URL.
-- **Backend**: Deploy `server` folder to **Render/Railway**. Set all backend environment variables.
-
-See `deployment_guide.md` in the repository for detailed steps.
+```
+Portfolio/
+├── client/                 # Next.js Frontend
+│   ├── app/               # App Router pages
+│   │   ├── admin/        # Admin dashboard
+│   │   ├── blog/         # Blog pages
+│   │   └── api/          # API routes (revalidation)
+│   ├── components/        # React components
+│   ├── lib/              # Utilities & data fetching
+│   └── public/           # Static assets
+│
+├── server/                # Express Backend
+│   ├── src/
+│   │   ├── controllers/  # Route handlers
+│   │   ├── models/       # Mongoose schemas
+│   │   ├── router/       # API routes
+│   │   └── middleware/   # Auth, validation, etc.
+│   └── uploads/          # Temporary uploads
+│
+└── README.md
+```
 
 ---
 
-## 📄 License
-MIT License.
+## 📜 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**Built with ❤️ and ☕ by [Govindraj Kotalwar](https://github.com/Starbuster2004)**
+
+⭐ Star this repo if you find it useful!
+
+</div>
