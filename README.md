@@ -12,7 +12,7 @@
 
 <br />
 
-**[🌐 Live Demo](https://your-portfolio.vercel.app)** · **[📖 Documentation](#-getting-started)** · **[🐛 Report Bug](https://github.com/Starbuster2004/Portfolio/issues)**
+**[🌐 Live Demo](https://govindraj.vercel.app)** · **[📖 Documentation](#-getting-started)** · **[🐛 Report Bug](https://github.com/Starbuster2004/Portfolio/issues)**
 
 </div>
 
@@ -83,6 +83,7 @@ Built with **Incremental Static Regeneration (ISR)**, the site loads **instantly
 <td width="33%" valign="top">
 
 ### 📊 Admin Dashboard
+- **Home Content** - Hero, About, Skills, Footer
 - **Projects** - CRUD with image uploads
 - **Blogs** - Rich content management
 - **Certificates** - Showcase credentials
@@ -92,6 +93,21 @@ Built with **Incremental Static Regeneration (ISR)**, the site loads **instantly
 </td>
 </tr>
 </table>
+
+---
+
+## 📝 Admin Content Management
+
+All content is managed through the admin dashboard and reflected on the site via ISR:
+
+| Admin Section | Controls |
+|---------------|----------|
+| **Home Content** | Hero title/subtitle, About section, Skills, Social links, Footer |
+| **Experience** | Work history timeline with roles, companies, descriptions |
+| **Projects** | Portfolio projects with images, GitHub links, tech tags |
+| **Blogs** | Blog posts with rich content and tags |
+| **Certificates** | Professional certifications with images |
+| **Skills** | Technology icons displayed in 3D sphere |
 
 ---
 
@@ -232,9 +248,10 @@ npm run dev
 After updating content in admin, trigger instant cache refresh:
 
 ```bash
-curl -X POST https://your-site.vercel.app/api/revalidate \
-  -H "x-revalidate-secret: YOUR_SECRET"
+curl "https://your-site.vercel.app/api/revalidate?secret=YOUR_SECRET"
 ```
+
+Or add a "Publish Changes" button in the admin dashboard.
 
 ---
 
@@ -248,7 +265,8 @@ Portfolio/
 │   │   ├── blog/         # Blog pages
 │   │   └── api/          # API routes (revalidation)
 │   ├── components/        # React components
-│   ├── lib/              # Utilities & data fetching
+│   ├── lib/
+│   │   └── data.ts       # ISR data fetching layer
 │   └── public/           # Static assets
 │
 ├── server/                # Express Backend
@@ -257,10 +275,41 @@ Portfolio/
 │   │   ├── models/       # Mongoose schemas
 │   │   ├── router/       # API routes
 │   │   └── middleware/   # Auth, validation, etc.
-│   └── uploads/          # Temporary uploads
+│   └── scripts/
+│       └── create_admin.js  # Admin user creation
 │
 └── README.md
 ```
+
+---
+
+## 🔄 ISR Data Flow
+
+All public pages are **statically generated** at build time:
+
+```mermaid
+flowchart LR
+    A[Admin Updates Content] --> B[Backend API]
+    B --> C{Revalidation Trigger}
+    C -->|Automatic| D[Every 1 Hour]
+    C -->|Manual| E[/api/revalidate]
+    D --> F[Regenerate Static Pages]
+    E --> F
+    F --> G[CDN Serves Fresh Content]
+```
+
+### Components Using ISR Data
+
+| Component | Data Source |
+|-----------|-------------|
+| `ShaderAnimation` | `heroTitle`, `heroSubtitle` |
+| `About` | `aboutTitle`, `aboutSubtitle`, `aboutDescription` |
+| `BentoGrid` | `skills[]` |
+| `Experience` | `experiences[]` |
+| `GithubProjects` | `projects[]` |
+| `BlogsPapers` | `blogs[]` |
+| `Certificates` | `certificates[]` |
+| `Footer` | `email`, `socialLinks`, `footerText` |
 
 ---
 

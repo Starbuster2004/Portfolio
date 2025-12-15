@@ -88,7 +88,7 @@ export default async function Home() {
 
       {/* Critical above-fold content - loaded immediately */}
       <section id="hero">
-        <ShaderAnimation />
+        <ShaderAnimation heroData={heroData} />
       </section>
 
       <section id="about">
@@ -104,7 +104,7 @@ export default async function Home() {
 
       <Suspense fallback={<SectionSkeleton />}>
         <section id="skills">
-          <BentoGrid />
+          <BentoGrid heroData={heroData} />
         </section>
       </Suspense>
 

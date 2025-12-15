@@ -5,8 +5,19 @@ import * as THREE from "three"
 import { motion } from "framer-motion"
 import { ArrowDown } from "lucide-react"
 import { HyperText } from "@/components/ui/hyper-text"
+import type { HeroData } from "@/lib/data"
 
-export function ShaderAnimation() {
+interface ShaderAnimationProps {
+    heroData?: HeroData | null;
+}
+
+// Default values for hero section
+const defaultHeroData = {
+    heroTitle: "Govindraj Kotalwar",
+    heroSubtitle: "AI Engineer • Full Stack Developer",
+};
+
+export function ShaderAnimation({ heroData }: ShaderAnimationProps) {
     const containerRef = useRef<HTMLDivElement>(null)
     const sceneRef = useRef<{
         camera: THREE.Camera
@@ -15,6 +26,18 @@ export function ShaderAnimation() {
         uniforms: any
         animationId: number
     } | null>(null)
+
+    // Parse hero title into first and last name
+    const fullName = heroData?.heroTitle || defaultHeroData.heroTitle;
+    const nameParts = fullName.split(' ');
+    const firstName = nameParts[0] || "Govindraj";
+    const lastName = nameParts.slice(1).join(' ') || "Kotalwar";
+
+    // Parse subtitle into parts (split by • or |)
+    const subtitle = heroData?.heroSubtitle || defaultHeroData.heroSubtitle;
+    const subtitleParts = subtitle.split(/[•|]/).map(s => s.trim()).filter(Boolean);
+    const subtitle1 = subtitleParts[0] || "AI Engineer";
+    const subtitle2 = subtitleParts[1] || "Full Stack Developer";
 
     useEffect(() => {
         if (!containerRef.current) return
@@ -171,7 +194,7 @@ export function ShaderAnimation() {
                         <span className="text-sm font-mono text-white/80">Available for Hire</span>
                     </motion.div>
 
-                    {/* Animated Name */}
+                    {/* Animated Name - Now Dynamic */}
                     <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mix-blend-difference overflow-hidden">
                         <motion.span
                             className="block text-white"
@@ -179,7 +202,7 @@ export function ShaderAnimation() {
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                         >
-                            Govindraj
+                            {firstName}
                         </motion.span>
                         <motion.span
                             className="block bg-gradient-to-r from-[#818CF8] via-[#6366F1] to-[#4F46E5] bg-clip-text text-transparent"
@@ -187,11 +210,11 @@ export function ShaderAnimation() {
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
                         >
-                            Kotalwar
+                            {lastName}
                         </motion.span>
                     </h1>
 
-                    {/* Subtitle with HyperText effect */}
+                    {/* Subtitle with HyperText effect - Now Dynamic */}
                     <motion.div
                         className="mt-6 flex items-center justify-center gap-3 pointer-events-auto"
                         initial={{ opacity: 0, y: 20 }}
@@ -199,13 +222,13 @@ export function ShaderAnimation() {
                         transition={{ duration: 0.8, delay: 0.9 }}
                     >
                         <HyperText
-                            text="AI Engineer"
+                            text={subtitle1}
                             className="text-xl md:text-2xl font-light tracking-wide text-[#818CF8]"
                             duration={600}
                         />
                         <span className="text-white/30 text-xl md:text-2xl">•</span>
                         <HyperText
-                            text="Full Stack Developer"
+                            text={subtitle2}
                             className="text-xl md:text-2xl font-light tracking-wide text-white/70"
                             duration={800}
                         />

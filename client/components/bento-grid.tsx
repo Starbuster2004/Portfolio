@@ -2,10 +2,9 @@
 
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import Link from "next/link"
 import Marquee from "@/components/ui/marquee"
 import SphereImageGrid from "@/components/ui/sphere-image-grid"
-import { fetchHeroData } from "@/lib/api"
+import type { HeroData } from "@/lib/data"
 
 interface Skill {
   name: string
@@ -13,27 +12,19 @@ interface Skill {
   category?: string
 }
 
-export function BentoGrid() {
-  const [skills, setSkills] = useState<Skill[]>([])
-  const [displayedSkills, setDisplayedSkills] = useState<Skill[]>([])
-  const [loading, setLoading] = useState(true)
+interface BentoGridProps {
+  heroData?: HeroData | null;
+}
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data = await fetchHeroData()
-        if (data && data.skills) {
-          setSkills(data.skills)
-          setDisplayedSkills(data.skills.slice(0, 6))
-        }
-      } catch (error) {
-        console.error("Failed to load skills:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    loadData()
-  }, [])
+/**
+ * Skills/BentoGrid Section Component
+ * 
+ * This component receives heroData (including skills) as props from the parent server component.
+ * No client-side fetching - data is pre-rendered at build time via ISR.
+ */
+export function BentoGrid({ heroData }: BentoGridProps) {
+  const skills: Skill[] = heroData?.skills || []
+  const [displayedSkills, setDisplayedSkills] = useState<Skill[]>(skills.slice(0, 6))
 
   useEffect(() => {
     if (skills.length <= 6) return
@@ -85,10 +76,9 @@ export function BentoGrid() {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/10" />
 
-            {loading ? (
+            {skills.length === 0 ? (
               <div className="flex items-center gap-2 text-zinc-500">
-                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                Loading Neural Network...
+                No skills added yet. Add some from the admin panel!
               </div>
             ) : (
               <div className="relative z-10 w-full h-full flex items-center justify-center">
@@ -117,11 +107,9 @@ export function BentoGrid() {
             <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white dark:from-black z-10 pointer-events-none fade-out" />
             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white dark:from-black z-10 pointer-events-none fade-out" />
 
-            {loading ? (
-              <div className="flex flex-col gap-4 p-4">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 animate-pulse" />
-                ))}
+            {skills.length === 0 ? (
+              <div className="flex flex-col gap-4 p-4 items-center justify-center h-full text-zinc-500">
+                No skills to display
               </div>
             ) : (
               <div className="flex flex-col h-full overflow-hidden">
@@ -154,4 +142,3 @@ function SkillCard({ skill }: { skill: Skill }) {
     </div>
   );
 }
-
