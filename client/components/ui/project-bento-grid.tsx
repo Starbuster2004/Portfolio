@@ -125,15 +125,17 @@ function BentoGridItem({ item }: { item: BentoItem }) {
             {/* Content */}
             <div className="relative z-10 flex flex-col space-y-3">
                 <div className="flex items-center justify-between">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 backdrop-blur-sm group-hover:bg-white/20 transition-all duration-300">
-                        {item.icon}
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-900/10 dark:bg-white/10 backdrop-blur-sm group-hover:bg-zinc-900/20 dark:group-hover:bg-white/20 transition-all duration-300">
+                        {React.isValidElement(item.icon) ? React.cloneElement(item.icon as React.ReactElement<any>, {
+                            className: cn((item.icon.props as any)?.className, "text-zinc-900 dark:text-white")
+                        }) : item.icon}
                     </div>
                     {item.status && (
                         <span
                             className={cn(
-                                "text-xs font-medium px-2 py-1 rounded-lg backdrop-blur-sm",
-                                "bg-white/10 text-gray-200",
-                                "transition-colors duration-300 group-hover:bg-white/20"
+                                "text-xs font-medium px-2 py-1 rounded-lg backdrop-blur-sm border",
+                                "border-zinc-200 dark:border-white/10 bg-zinc-100/50 dark:bg-white/10 text-zinc-600 dark:text-gray-200",
+                                "transition-colors duration-300 group-hover:bg-zinc-200/50 dark:group-hover:bg-white/20"
                             )}
                         >
                             {item.status}
@@ -142,23 +144,25 @@ function BentoGridItem({ item }: { item: BentoItem }) {
                 </div>
 
                 <div className="space-y-2">
-                    <h3 className="font-medium text-white tracking-tight text-xl">
+                    <h3 className="font-semibold text-zinc-900 dark:text-white tracking-tight text-xl">
                         {item.title}
-                        <span className="ml-2 text-xs text-gray-300 font-normal">
-                            {item.meta}
-                        </span>
+                        {item.meta && (
+                            <span className="ml-2 text-xs text-zinc-500 dark:text-gray-400 font-normal">
+                                {item.meta}
+                            </span>
+                        )}
                     </h3>
-                    <p className="text-sm text-gray-300 leading-snug font-[425] line-clamp-2">
+                    <p className="text-sm text-zinc-600 dark:text-gray-300 leading-snug font-[425] line-clamp-2">
                         {item.description}
                     </p>
                 </div>
 
                 <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center space-x-2 text-xs text-gray-300">
+                    <div className="flex items-center space-x-2 text-xs">
                         {item.tags?.slice(0, 3).map((tag, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 rounded-md bg-white/10 backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
+                                className="px-2 py-1 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-100/50 dark:bg-white/10 text-zinc-600 dark:text-gray-300 backdrop-blur-sm transition-all duration-200 hover:bg-zinc-200/50 dark:hover:bg-white/20"
                             >
                                 #{tag}
                             </span>
@@ -166,12 +170,12 @@ function BentoGridItem({ item }: { item: BentoItem }) {
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         {item.githubUrl && (
-                            <a href={item.githubUrl} target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400">
+                            <a href={item.githubUrl} target="_blank" rel="noopener noreferrer" className="text-zinc-600 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
                                 <Github className="w-4 h-4" />
                             </a>
                         )}
                         {item.link && (
-                            <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400">
+                            <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-zinc-600 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
                                 <ExternalLink className="w-4 h-4" />
                             </a>
                         )}
