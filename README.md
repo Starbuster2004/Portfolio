@@ -12,7 +12,7 @@
 
 <br />
 
-**[🌐 Live Demo](https://govindraj.vercel.app)** · **[📖 Documentation](#-getting-started)** · **[🐛 Report Bug](https://github.com/Starbuster2004/Portfolio/issues)**
+**[🌐 Live Demo](https://govindraj-kotalwar.vercel.app/)** · **[📖 Documentation](#-getting-started)** · **[🐛 Report Bug](https://github.com/Starbuster2004/Portfolio/issues)**
 
 </div>
 
