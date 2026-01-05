@@ -287,7 +287,7 @@ Portfolio/
 
 All public pages are **statically generated** at build time:
 
-```mermaid
+```
 flowchart LR
     A[Admin Updates Content] --> B[Backend API]
     B --> C{Revalidation Trigger}
