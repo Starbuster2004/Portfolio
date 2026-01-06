@@ -240,7 +240,7 @@ export function Footer({ footerData }: FooterProps) {
                 <div className="p-3 rounded-full bg-zinc-200 dark:bg-zinc-800">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <span className="font-medium">Available for Remote Work</span>
+                <span className="font-medium">Available for Remote & On-site Work</span>
               </div>
             </div>
           </motion.div>
