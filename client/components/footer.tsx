@@ -293,7 +293,7 @@ export function Footer({ footerData }: FooterProps) {
           transition={{ delay: 0.6 }}
         >
           <p className="text-sm text-zinc-500">
-            © {new Date().getFullYear()} Govindraj Kotalwar. All rights reserved.
+            © 2025 Govindraj Kotalwar. All rights reserved.
           </p>
           <p className="text-sm text-zinc-500">
             Crafted with <span className="text-[#6366F1]">♥</span> and caffeine
