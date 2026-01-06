@@ -191,7 +191,7 @@ export function ShaderAnimation({ heroData }: ShaderAnimationProps) {
                             }}
                             transition={{ duration: 2, repeat: Infinity }}
                         />
-                        <span className="text-sm font-mono text-white/80">Available for Hire</span>
+                        <span className="text-sm font-mono text-white/80">Actively Exploring Opportunities</span>
                     </motion.div>
 
                     {/* Animated Name - Now Dynamic */}

@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Portfolio V3
+# 🚀 Personal Portfolio 
 
 ### A blazing-fast, visually stunning portfolio with ISR-powered static architecture
 
