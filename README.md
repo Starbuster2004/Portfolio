@@ -42,7 +42,7 @@ Built with **Incremental Static Regeneration (ISR)**, the site loads **instantly
 ```
 ┌─────────────┐      ┌─────────────┐
 │  Build Time │ ───▶ │  Static HTML │
-│  (Vercel)   │      │  (CDN Edge)  │
+│  (Vercel)   │      │  (CDN Edge) │
 └─────────────┘      └─────────────┘
        │                    │
        ▼                    ▼
