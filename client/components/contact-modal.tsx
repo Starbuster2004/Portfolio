@@ -75,7 +75,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                      Operator Name
+                      Senders Name
                     </label>
                     <input
                       id="name"
@@ -87,7 +87,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                      Communication Frequency
+                      Communication Method
                     </label>
                     <input
                       id="email"
@@ -100,7 +100,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                      Transmission Data
+                      Message Content
                     </label>
                     <textarea
                       id="message"
@@ -115,7 +115,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     type="submit"
                     className="w-full py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                   >
-                    Send Transmission
+                    Send Message
                     <Send className="w-4 h-4" />
                   </button>
                 </form>
@@ -134,16 +134,15 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mb-6">
                     <CheckCircle className="w-8 h-8 text-green-500" />
                   </div>
-                  <h4 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Transmission Complete</h4>
+                  <h4 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Message Sent</h4>
                   <p className="text-zinc-500 mb-8 max-w-xs">
-                    Your message has been successfully routed. Expect a response within 24 hours.
+                    Your message has been successfully Sent. Will get a response within 48 hours.
                   </p>
                   <button
                     onClick={onClose}
                     className="px-8 py-3 bg-zinc-100 dark:bg-zinc-800 rounded-full font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
                   >
-                    Close Terminal
-                  </button>
+                    Close dashboard                         </button>
                 </div>
               )}
             </div>
