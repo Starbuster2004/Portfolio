@@ -33,7 +33,7 @@ export function Certificates({ certificates }: CertificatesProps) {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                     >
-                        {"// Credentials"}
+                        {"•// Credentials"}
                     </motion.span>
                     <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white">Certifications</h2>
                 </motion.div>

@@ -44,7 +44,7 @@ export function Features() {
           className="text-center"
         >
           <h2 className="text-4xl md:text-7xl font-bold tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-zinc-900 via-zinc-700 to-zinc-500 dark:from-white dark:via-zinc-200 dark:to-zinc-500">
-            The Next Evolution.
+            The Next AI Enthusatic.
           </h2>
           <p className="text-xl md:text-3xl text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-4xl mx-auto">
             <span className="font-semibold text-zinc-900 dark:text-zinc-100">B.Tech ECE Architecture.</span>
@@ -77,7 +77,7 @@ export function Features() {
           <h2 className="text-sm font-mono text-purple-600 dark:text-purple-400 tracking-wider uppercase mb-4">
             // Field Tests
           </h2>
-          <h3 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white">Performance Records</h3>
+          <h3 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white">Performance History</h3>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

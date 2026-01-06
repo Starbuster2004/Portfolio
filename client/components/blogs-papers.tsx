@@ -34,7 +34,7 @@ export function BlogsPapers({ blogs }: BlogsPapersProps) {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                     >
-                        {"// Insights & Research"}
+                        {"•// Insights & Research"}
                     </motion.span>
                     <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white">Blogs & Publications</h2>
                 </motion.div>

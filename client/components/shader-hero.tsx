@@ -14,7 +14,7 @@ interface ShaderAnimationProps {
 // Default values for hero section
 const defaultHeroData = {
     heroTitle: "Govindraj Kotalwar",
-    heroSubtitle: "AI Engineer • Full Stack Developer",
+    heroSubtitle: "AI Engineer • Data Analyst",
 };
 
 export function ShaderAnimation({ heroData }: ShaderAnimationProps) {

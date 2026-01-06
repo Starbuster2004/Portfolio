@@ -67,7 +67,7 @@ export function Hero() {
             animate={{ opacity: [1, 0.5, 1] }}
             transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
           />
-          <span className="text-sm font-mono text-zinc-600 dark:text-zinc-400">Status: Ready for Deployment</span>
+          <span className="text-sm font-mono text-zinc-600 dark:text-zinc-400">Status: Ready for Developement</span>
         </motion.div>
 
         {/* Main name */}
@@ -126,7 +126,7 @@ export function Hero() {
           }}
           className="flex flex-col items-center gap-2"
         >
-          <span className="text-xs font-mono text-zinc-500 dark:text-zinc-600 uppercase tracking-wider">Scroll</span>
+          <span className="text-xs font-mono text-zinc-500 dark:text-zinc-600 uppercase tracking-wider">Scroll Down</span>
           <ArrowDown className="w-4 h-4 text-zinc-400 dark:text-zinc-600" />
         </motion.div>
       </motion.div>

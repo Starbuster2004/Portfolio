@@ -60,7 +60,7 @@ export function BentoGrid({ heroData }: BentoGridProps) {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            {"// System Architecture"}
+            {"•// System Architecture"}
           </motion.span>
           <h3 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white">Skills & Technologies</h3>
         </motion.div>

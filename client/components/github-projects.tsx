@@ -45,7 +45,7 @@ export function GithubProjects({ projects }: GithubProjectsProps) {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            {"// Featured Work"}
+            {"•// Featured Work"}
           </motion.span>
           <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white">Projects & Open Source</h2>
         </motion.div>

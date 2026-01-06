@@ -61,7 +61,7 @@ export function Experience({ experiences }: ExperienceProps) {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                     >
-                        // Career Journey
+                        •// Career Journey
                     </motion.span>
                     <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-zinc-900 via-zinc-700 to-zinc-500 dark:from-white dark:via-zinc-200 dark:to-zinc-500">
                         Professional Experience
