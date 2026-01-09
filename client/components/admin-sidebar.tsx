@@ -62,7 +62,7 @@ export function AdminSidebar() {
         <aside className="fixed left-0 top-0 bottom-0 w-64 bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-6 flex flex-col z-50">
             <div className="mb-8">
                 <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Admin Dashboard</h2>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">v6.01.2026</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">v.01.2026</p>
             </div>
 
             <nav className="flex-1 space-y-1">
