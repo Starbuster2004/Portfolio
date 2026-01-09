@@ -156,7 +156,7 @@ export function Footer({ footerData }: FooterProps) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
             >
-                            // Let&apos;s Connect
+                            •// Let&apos;s Connect
             </motion.span>
 
             <h2 className="text-5xl md:text-7xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">

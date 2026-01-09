@@ -101,7 +101,7 @@ export function CursorEffect() {
       <motion.div
         className="fixed inset-0 pointer-events-none z-[40]"
         style={{
-          background: `radial-gradient(200px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(99, 102, 241, 0.08), transparent 60%)`,
+          background: `radial-gradient(200px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(90, 92, 240, 0.08), transparent 60%)`,
         }}
       />
     </>

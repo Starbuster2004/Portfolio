@@ -87,7 +87,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                      Communication Method
+                      Communication Email
                     </label>
                     <input
                       id="email"

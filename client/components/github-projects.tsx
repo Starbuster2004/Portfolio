@@ -27,7 +27,7 @@ export function GithubProjects({ projects }: GithubProjectsProps) {
     hasPersistentHover: false,
     image: project.image,
     githubUrl: project.githubUrl,
-    link: project.link
+    link : project.link,
   }))
 
   return (
