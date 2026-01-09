@@ -67,7 +67,7 @@ export function Hero() {
             animate={{ opacity: [1, 0.5, 1] }}
             transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
           />
-          <span className="text-sm font-mono text-zinc-600 dark:text-zinc-400">Status: Ready for Developement</span>
+          <span className="text-sm font-mono text-zinc-600 dark:text-zinc-400">Actievly Exploring opportunities</span>
         </motion.div>
 
         {/* Main name */}
