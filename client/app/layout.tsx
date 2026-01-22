@@ -15,9 +15,13 @@ const _geistMono = V0_Font_Geist_Mono({ subsets: ['latin'], weight: ["100", "200
 const _sourceSerif_4 = V0_Font_Source_Serif_4({ subsets: ['latin'], weight: ["200", "300", "400", "500", "600", "700", "800", "900"], variable: '--font-source-serif-4' })
 
 export const metadata: Metadata = {
-  title: "Govindraj Kotalwar | AI Engineer",
-  description: "Portfolio of Govindraj Kotalwar - AI & Data Science Professional",
-  generator: "v0.app",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://govindrajkotalwar.com'),
+  title: {
+    default: "Govindraj Kotalwar | AI Engineer & Data Scientist",
+    template: "%s | Govindraj Kotalwar"
+  },
+  description: "Portfolio of Govindraj Kotalwar - AI Engineer & Data Science Professional specializing in Machine Learning, Deep Learning, and Full Stack Development.",
+  generator: "Next.js",
   icons: {
     icon: [
       {
@@ -36,16 +40,35 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
   // SEO enhancements
-  keywords: ["AI Engineer", "Machine Learning", "Full Stack Developer", "Portfolio", "Govindraj Kotalwar"],
+  keywords: ["AI Engineer", "Machine Learning", "Full Stack Developer", "Portfolio", "Govindraj Kotalwar", "Data Scientist", "Deep Learning", "Python", "PyTorch"],
   authors: [{ name: "Govindraj Kotalwar" }],
+  creator: "Govindraj Kotalwar",
   openGraph: {
-    title: "Govindraj Kotalwar | AI Engineer",
-    description: "Portfolio of Govindraj Kotalwar - AI & Data Science Professional",
+    title: "Govindraj Kotalwar | AI Engineer & Data Scientist",
+    description: "Portfolio of Govindraj Kotalwar - AI Engineer & Data Science Professional specializing in Machine Learning, Deep Learning, and Full Stack Development.",
     type: "website",
+    locale: "en_US",
+    siteName: "Govindraj Kotalwar Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Govindraj Kotalwar | AI Engineer",
+    description: "Portfolio of Govindraj Kotalwar - AI Engineer & Data Science Professional",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    // Add your Google Search Console verification code here
+    // google: 'your-verification-code',
   },
 }
 
