@@ -105,6 +105,86 @@ function MagneticSocialIcon({
   )
 }
 
+// Magnetic contact button (opens modal instead of mailto)
+function MagneticContactButton({
+  onClick,
+  icon: Icon,
+  label,
+  color,
+}: {
+  onClick: () => void
+  icon: React.ElementType
+  label: string
+  color: string
+}) {
+  const ref = useRef<HTMLButtonElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
+
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const springConfig = { damping: 15, stiffness: 150 }
+  const xSpring = useSpring(x, springConfig)
+  const ySpring = useSpring(y, springConfig)
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    x.set((e.clientX - centerX) * 0.3)
+    y.set((e.clientY - centerY) * 0.3)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+    setIsHovered(false)
+  }
+
+  return (
+    <motion.button
+      ref={ref}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: xSpring, y: ySpring }}
+      className="relative flex flex-col items-center gap-3 p-6 rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 transition-colors group cursor-pointer"
+    >
+      {/* Glow effect */}
+      <motion.div
+        className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, ${color}20, transparent 70%)`,
+        }}
+        animate={{ opacity: isHovered ? 1 : 0 }}
+      />
+
+      <motion.div
+        animate={{
+          scale: isHovered ? 1.2 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+      >
+        <motion.div
+          animate={{
+            rotate: isHovered ? [0, -10, 10, 0] : 0,
+          }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
+          <Icon
+            className="w-7 h-7 transition-colors duration-300"
+            style={{ color: isHovered ? color : undefined }}
+          />
+        </motion.div>
+      </motion.div>
+      <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">{label}</span>
+    </motion.button>
+  )
+}
+
+
 /**
  * Footer Section Component
  * 
@@ -156,7 +236,7 @@ export function Footer({ footerData }: FooterProps) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
             >
-                            •// Let&apos;s Connect
+              •// Let&apos;s Connect
             </motion.span>
 
             <h2 className="text-5xl md:text-7xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">
@@ -227,15 +307,15 @@ export function Footer({ footerData }: FooterProps) {
             </p>
 
             <div className="flex flex-col gap-4">
-              <a
-                href={`mailto:${data.email}`}
-                className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-300 hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors group"
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-300 hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors group cursor-pointer"
               >
                 <div className="p-3 rounded-full bg-zinc-200 dark:bg-zinc-800 group-hover:bg-[#6366F1]/20 transition-colors">
                   <Mail className="w-5 h-5" />
                 </div>
-                <span className="font-medium">{data.email}</span>
-              </a>
+                <span className="font-medium">Send me a message</span>
+              </button>
               <div className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-300">
                 <div className="p-3 rounded-full bg-zinc-200 dark:bg-zinc-800">
                   <MapPin className="w-5 h-5" />
@@ -274,8 +354,8 @@ export function Footer({ footerData }: FooterProps) {
                 label="Twitter"
                 color="#1DA1F2"
               />
-              <MagneticSocialIcon
-                href={`mailto:${data.email}`}
+              <MagneticContactButton
+                onClick={() => setIsModalOpen(true)}
                 icon={Mail}
                 label="Email"
                 color="#6366F1"

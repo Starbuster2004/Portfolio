@@ -3,6 +3,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const ApiError = require('../utils/apiError');
 const ApiResponse = require('../utils/apiResponse');
 const { PAGINATION } = require('../utils/constants');
+const { logger } = require('../utils/logger');
 
 /**
  * @desc    Submit contact form
@@ -10,15 +11,49 @@ const { PAGINATION } = require('../utils/constants');
  * @access  Public
  */
 exports.submitContact = asyncHandler(async (req, res) => {
-    const { name, email, message, subject, phone } = req.body;
+    const { name, email, message, subject, phone, website } = req.body;
 
+    // HONEYPOT SPAM PROTECTION
+    // If the 'website' field is filled, it's likely a bot
+    // This field is hidden from real users but bots will fill it
+    if (website) {
+        logger.warn({ ip: req.ip, email }, 'Honeypot triggered - spam bot detected');
+        // Return success to not alert the bot, but don't save
+        return res.status(201).json(ApiResponse.created({}, 'Message sent successfully'));
+    }
+
+    // Additional spam checks
+    const spamPatterns = [
+        /\b(viagra|cialis|casino|lottery|winner|claim|prize)\b/i,
+        /\b(click here|buy now|limited time|act now)\b/i,
+        /(http[s]?:\/\/){2,}/i, // Multiple URLs
+    ];
+
+    const combinedText = `${name} ${message} ${subject || ''}`;
+    const isSpam = spamPatterns.some(pattern => pattern.test(combinedText));
+
+    if (isSpam) {
+        logger.warn({ ip: req.ip, email }, 'Spam content detected in contact form');
+        // Return success to not alert the spammer
+        return res.status(201).json(ApiResponse.created({}, 'Message sent successfully'));
+    }
+
+    // Validate email format more strictly
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+        throw ApiError.badRequest('Please provide a valid email address');
+    }
+
+    // Create the contact record
     const newContact = await Contact.create({
-        name,
-        email,
-        message,
-        subject,
-        phone,
+        name: name.trim(),
+        email: email.toLowerCase().trim(),
+        message: message.trim(),
+        subject: subject?.trim(),
+        phone: phone?.trim(),
     });
+
+    logger.info({ contactId: newContact._id, email }, 'New contact form submission received');
 
     res.status(201).json(ApiResponse.created(newContact, 'Message sent successfully'));
 });

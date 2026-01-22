@@ -23,13 +23,36 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     const name = (form.elements.namedItem('name') as HTMLInputElement).value;
     const email = (form.elements.namedItem('email') as HTMLInputElement).value;
     const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+    // Honeypot field - should be empty for real users
+    const website = (form.elements.namedItem('website') as HTMLInputElement)?.value || '';
+
+    // Client-side validation
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setStep("form");
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setStep("form");
+      alert("Please enter a valid email address.");
+      return;
+    }
 
     try {
       // Use Next.js proxy
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject: "Portfolio Contact", message })
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          subject: "Portfolio Contact",
+          message: message.trim(),
+          website // Honeypot field
+        })
       });
 
       if (!res.ok) throw new Error("Failed to send message");
@@ -109,6 +132,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       rows={4}
                       className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all resize-none"
                       placeholder="Describe project parameters..."
+                    />
+                  </div>
+                  {/* Honeypot field - hidden from users, bots will fill this */}
+                  <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true">
+                    <label htmlFor="website">Website (leave empty)</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
                     />
                   </div>
                   <button
