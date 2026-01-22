@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import * as THREE from "three"
 import { motion } from "framer-motion"
-import { ArrowDown } from "lucide-react"
+import { ArrowDown, Download } from "lucide-react"
 import { HyperText } from "@/components/ui/hyper-text"
 import type { HeroData } from "@/lib/data"
 
@@ -38,6 +38,9 @@ export function ShaderAnimation({ heroData }: ShaderAnimationProps) {
     const subtitleParts = subtitle.split(/[•|]/).map(s => s.trim()).filter(Boolean);
     const subtitle1 = subtitleParts[0] || "AI Engineer";
     const subtitle2 = subtitleParts[1] || "Full Stack Developer";
+
+    // Get resume URL
+    const resumeUrl = heroData?.resumeUrl;
 
     useEffect(() => {
         if (!containerRef.current) return
@@ -233,6 +236,37 @@ export function ShaderAnimation({ heroData }: ShaderAnimationProps) {
                             duration={800}
                         />
                     </motion.div>
+
+                    {/* Download Resume Button */}
+                    {resumeUrl && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.1 }}
+                            className="mt-8 pointer-events-auto"
+                        >
+                            <a
+                                href={resumeUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                download
+                                className="group relative inline-flex items-center gap-3 px-8 py-4 overflow-hidden rounded-full bg-gradient-to-r from-[#6366F1] via-[#818CF8] to-[#4F46E5] text-white font-medium text-lg shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/40 hover:scale-105"
+                            >
+                                {/* Animated background shimmer */}
+                                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+
+                                {/* Icon with bounce animation */}
+                                <motion.span
+                                    animate={{ y: [0, -2, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                >
+                                    <Download className="w-5 h-5" />
+                                </motion.span>
+
+                                <span className="relative">Download Resume</span>
+                            </a>
+                        </motion.div>
+                    )}
                 </motion.div>
             </div>
 

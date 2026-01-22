@@ -45,6 +45,10 @@ const HomeDataSchema = new mongoose.Schema({
         twitter: { type: String, default: "" },
         website: { type: String, default: "" },
     },
+    resumeUrl: {
+        type: String,
+        default: "",
+    },
 });
 
 module.exports = mongoose.model('HomeData', HomeDataSchema);

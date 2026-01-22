@@ -1,11 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { toast } from "sonner"
-import { Save, Github, Linkedin, Twitter, Globe, Mail } from "lucide-react"
+import { Save, Github, Linkedin, Twitter, Globe, Mail, FileUp, FileText, Trash2, Loader2 } from "lucide-react"
 
 export default function AdminHome() {
     const [loading, setLoading] = useState(true)
+    const [resumeUrl, setResumeUrl] = useState<string>("")
+    const [uploading, setUploading] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
     const [formData, setFormData] = useState({
         heroTitle: "",
         heroSubtitle: "",
@@ -52,6 +55,7 @@ export default function AdminHome() {
                         website: "",
                     },
                 })
+                setResumeUrl(data.resumeUrl || "")
             }
         } catch (error) {
             console.error("Failed to fetch home data:", error)
@@ -104,6 +108,59 @@ export default function AdminHome() {
         })
     }
 
+    const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        // Validate file type
+        if (file.type !== "application/pdf") {
+            toast.error("Please upload a PDF file")
+            return
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            toast.error("File size must be less than 5MB")
+            return
+        }
+
+        setUploading(true)
+        try {
+            const token = localStorage.getItem("admin_token")
+            const API_URL = "/api"
+
+            const formData = new FormData()
+            formData.append("resume", file)
+
+            const res = await fetch(`${API_URL}/hero/resume`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            })
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}))
+                throw new Error(errorData.message || "Failed to upload resume")
+            }
+
+            const data = await res.json()
+            setResumeUrl(data.data?.resumeUrl || "")
+            toast.success("Resume uploaded successfully!")
+
+            // Clear the file input
+            if (fileInputRef.current) {
+                fileInputRef.current.value = ""
+            }
+        } catch (error) {
+            console.error("Failed to upload resume:", error)
+            toast.error("Failed to upload resume")
+        } finally {
+            setUploading(false)
+        }
+    }
+
     if (loading) return <div>Loading...</div>
 
     return (
@@ -134,6 +191,77 @@ export default function AdminHome() {
                             onChange={(e) => setFormData({ ...formData, heroSubtitle: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-none outline-none focus:ring-2 focus:ring-indigo-500"
                         />
+                    </div>
+                </div>
+
+                {/* Resume Upload Section */}
+                <div className="space-y-4">
+                    <h2 className="text-xl font-bold border-b pb-2 dark:border-zinc-800">Resume</h2>
+
+                    <div className="space-y-4">
+                        {/* Current Resume Display */}
+                        {resumeUrl && (
+                            <div className="flex items-center gap-4 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800">
+                                <div className="p-3 rounded-lg bg-emerald-100 dark:bg-emerald-900/40">
+                                    <FileText className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-medium text-emerald-900 dark:text-emerald-100">Resume Uploaded</p>
+                                    <a
+                                        href={resumeUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline"
+                                    >
+                                        View Current Resume →
+                                    </a>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Upload New Resume */}
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium flex items-center gap-2">
+                                <FileUp className="w-4 h-4" /> Upload Resume (PDF)
+                            </label>
+                            <div className="relative">
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept=".pdf,application/pdf"
+                                    onChange={handleResumeUpload}
+                                    disabled={uploading}
+                                    className="hidden"
+                                    id="resume-upload"
+                                />
+                                <label
+                                    htmlFor="resume-upload"
+                                    className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200
+                                        ${uploading
+                                            ? 'border-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
+                                            : 'border-zinc-300 dark:border-zinc-700 hover:border-indigo-400 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10'
+                                        }`}
+                                >
+                                    {uploading ? (
+                                        <div className="flex flex-col items-center gap-3">
+                                            <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
+                                            <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Uploading...</span>
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col items-center gap-3 text-zinc-500 dark:text-zinc-400">
+                                            <FileUp className="w-10 h-10" />
+                                            <div className="text-center">
+                                                <span className="text-sm font-medium">Click to upload</span>
+                                                <p className="text-xs mt-1">PDF files only, max 5MB</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </label>
+                            </div>
+                            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                                This resume will be available for download on your portfolio&apos;s hero section.
+                            </p>
+                        </div>
                     </div>
                 </div>
 

@@ -36,6 +36,7 @@ export interface HeroData {
     };
     footerText?: string;
     skills?: Array<{ name: string; icon: string }>;
+    resumeUrl?: string;
 }
 
 export interface Project {
